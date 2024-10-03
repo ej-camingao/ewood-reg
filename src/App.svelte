@@ -7,6 +7,8 @@
 
   let attendees = [];
   let currentView = 'search';
+  let showPasswordPrompt = false;
+  let password = '';
 
   onMount(() => {
     const storedAttendees = localStorage.getItem('attendees');
@@ -41,15 +43,27 @@
 
   function navigateTo(view) {
     if (view === 'database') {
-      history.pushState(null, '', '/Database');
-    } else if (view === 'new') {
-      history.pushState(null, '', '/new');
-    } else if (view === 'list') {
-      history.pushState(null, '', '/list');
+      showPasswordPrompt = true;
     } else {
-      history.pushState(null, '', '/');
+      history.pushState(null, '', view === 'search' ? '/' : `/${view}`);
+      currentView = view;
     }
-    currentView = view;
+  }
+
+  function checkPassword() {
+    if (password === '1234') {
+      showPasswordPrompt = false;
+      password = '';
+      history.pushState(null, '', '/Database');
+      currentView = 'database';
+    } else {
+      alert('Incorrect password');
+    }
+  }
+
+  function cancelPasswordPrompt() {
+    showPasswordPrompt = false;
+    password = '';
   }
 
   function saveAttendees() {
@@ -106,15 +120,12 @@
     <img src="logo.png" alt="Elevate Eastwood Logo"/>
   </div>
   
-  <h1 class="font-bold">Welcome to Elevate Eastwood!</h1>
+  <h1 class="font-bold text-3xl mb-6">Welcome to Elevate Eastwood!</h1>
 
-  <nav class="mt-10">
-    <button on:click={() => navigateTo('search')}>Register</button>
-    <button on:click={() => navigateTo('new')}>New Attendee</button>
-    <button on:click={() => navigateTo('list')}>Today's Attendance</button>
-    {#if currentView === 'database'}
-      <button on:click={() => navigateTo('search')}>Exit Database</button>
-    {/if}
+  <nav class="mt-10 flex justify-between w-full">
+    <button class="flex-grow mx-2" on:click={() => navigateTo('search')}>Register</button>
+    <button class="flex-grow mx-2" on:click={() => navigateTo('new')}>New Attendee</button>
+    <button class="flex-grow mx-2" on:click={() => navigateTo('list')}>Today's Attendance</button>
   </nav>
 
   {#if currentView === 'search'}
@@ -133,23 +144,19 @@
       on:updateAttendee={updateAttendee}
     />
   {/if}
-</main>
 
-<style>
-  main {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  nav {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  button {
-    padding: 10px;
-    flex-grow: 1;
-    margin: 0 5px;
-    font-size: medium;
-  }
-</style>
+  <button class="database-button" on:click={() => navigateTo('database')}>Database</button>
+
+  {#if showPasswordPrompt}
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+      <div class="bg-white p-8 rounded-lg shadow-xl">
+        <h2 class="text-xl mb-4">Enter Password</h2>
+        <input type="password" bind:value={password} class="border p-2 mb-4 w-full" placeholder="Enter password">
+        <div class="flex justify-end">
+          <button on:click={cancelPasswordPrompt} class="bg-gray-300 text-black px-4 py-2 rounded mr-2">Cancel</button>
+          <button on:click={checkPassword} class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+        </div>
+      </div>
+    </div>
+  {/if}
+</main>
