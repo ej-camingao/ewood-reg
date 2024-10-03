@@ -37,15 +37,11 @@
       showDetailedView = false;
     }
 
-    function saveEditedAttendee() {
-      dispatch('updateAttendee', { original: selectedAttendee, updated: editingAttendee });
-      const index = attendees.findIndex(a => a === selectedAttendee);
-      if (index !== -1) {
-        attendees[index] = { ...editingAttendee };
-        attendees = [...attendees]; // Trigger reactivity
-      }
+      function saveEditedAttendee() {
+      dispatch('updateAttendee', editingAttendee);
       closeModal();
-    }
+}
+
 
     function closeModal() {
       showDetailedView = false;

@@ -107,12 +107,13 @@
   }
 
   function updateAttendee(event) {
-    const updatedAttendee = event.detail;
-    attendees = attendees.map(a => 
-      a.name === updatedAttendee.name ? updatedAttendee : a
-    );
-    saveAttendees();
-  }
+  const updatedAttendee = event.detail;
+  attendees = attendees.map(a => 
+    a.name === updatedAttendee.name ? {...a, ...updatedAttendee} : a
+  );
+  attendees = [...attendees]; // Trigger reactivity
+  saveAttendees();
+}
 </script>
 
 <main>
@@ -122,10 +123,11 @@
   
   <h1 class="font-bold text-3xl mb-6">Welcome to Elevate Eastwood!</h1>
 
-  <nav class="mt-10 flex justify-between w-full">
-    <button class="flex-grow mx-2" on:click={() => navigateTo('search')}>Register</button>
-    <button class="flex-grow mx-2" on:click={() => navigateTo('new')}>New Attendee</button>
-    <button class="flex-grow mx-2" on:click={() => navigateTo('list')}>Today's Attendance</button>
+  <nav class="mt-10 flex justify-between w-full mb-10">
+    <button class="flex-grow mx-1" on:click={() => navigateTo('search')}>Register</button>
+    <button class="flex-grow mx-1" on:click={() => navigateTo('new')}>New Here?</button>
+    <button class="flex-grow mx-1" on:click={() => navigateTo('list')}>Attendance</button>
+    <button class="flex-grow mx-1" on:click={() => navigateTo('database')}>Database</button>
   </nav>
 
   {#if currentView === 'search'}
@@ -145,16 +147,15 @@
     />
   {/if}
 
-  <button class="database-button" on:click={() => navigateTo('database')}>Database</button>
-
+ 
   {#if showPasswordPrompt}
     <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-      <div class="bg-white p-8 rounded-lg shadow-xl">
+      <div class=" bg-slate-900 p-8 rounded-lg shadow-xl">
         <h2 class="text-xl mb-4">Enter Password</h2>
         <input type="password" bind:value={password} class="border p-2 mb-4 w-full" placeholder="Enter password">
         <div class="flex justify-end">
-          <button on:click={cancelPasswordPrompt} class="bg-gray-300 text-black px-4 py-2 rounded mr-2">Cancel</button>
-          <button on:click={checkPassword} class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+          <button on:click={cancelPasswordPrompt} class="bg-gray-300 text-black px-4 py-2 rounded mr-2 border p-2 mb-4 w-full">Cancel</button>
+          <button on:click={checkPassword} class="bg-blue-500 text-white px-4 py-2 rounded border p-2 mb-4 w-full">Submit</button>
         </div>
       </div>
     </div>

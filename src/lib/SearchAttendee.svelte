@@ -41,7 +41,7 @@
         {/each}
       </ul>
     {:else if searchName}
-      <p>No matching attendees found. If you're new, please use the "New Attendee" form.</p>
+      <p class="contain-inline-size">No matching attendees found. If it's your first time, please select "New Here?"</p>
     {/if}
   </div>
   
