@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap'); /* Remove if using system fonts */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply font globally */
+@layer base {
+  html {
+    /* For Google Fonts (Merriweather) */
+    font-family: 'Merriweather', serif;
+    
+    /* OR for System Fonts (Cambria) */
+    /* font-family: Cambria, 'Hoefler Text', Utopia, 'Liberation Serif', 'Nimbus Roman No9 L Regular', Times, 'Times New Roman', serif; */
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles that can't be handled by Tailwind */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+/* Ensure the form is scrollable on very small screens */
+@media (max-height: 600px) {
+    .overflow-y-auto {
+        max-height: 100vh;
+    }
+}
+
+/* Optional: Custom scrollbar styles */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
