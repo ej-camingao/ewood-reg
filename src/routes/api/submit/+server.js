@@ -1,14 +1,13 @@
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
 
-// Load environment variables from the .env file
 dotenv.config();
 
 const GOOGLE_CREDENTIALS = {
     type: process.env.GOOGLE_TYPE,
     project_id: process.env.GOOGLE_PROJECT_ID,
     private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Fix private key formatting
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
     client_id: process.env.GOOGLE_CLIENT_ID,
     auth_uri: process.env.GOOGLE_AUTH_URI,
@@ -30,20 +29,35 @@ export async function POST({ request }) {
 
         const sheets = google.sheets({ version: 'v4', auth });
 
+        // Prepare row data based on attendee type
+        const rowData = body.isFirstTime ? [
+            body.name,
+            body.age,
+            body.birthday,
+            body.gender,
+            body.contactNumber,
+            body.facebookName,
+            '', // Empty DGroup leader field
+            body.isFirstTime ? 'First Time' : 'Returning',
+            new Date().toISOString()
+        ] : [
+            body.name,
+            '', // Empty age
+            '', // Empty birthday
+            '', // Empty gender
+            '', // Empty contact number
+            '', // Empty facebook name
+            body.dgroupLeader,
+            'Returning',
+            new Date().toISOString()
+        ];
+
         const response = await sheets.spreadsheets.values.append({
             spreadsheetId: SHEET_ID,
-            range: 'Sheet1!A:G',
+            range: 'Sheet1!A:I', // Updated range to include new columns
             valueInputOption: 'USER_ENTERED',
             requestBody: {
-                values: [[
-                    body.name,
-                    body.age,
-                    body.birthday,
-                    body.gender,
-                    body.contactNumber,
-                    body.facebookName,
-                    new Date().toISOString()
-                ]],
+                values: [rowData],
             },
         });
 
