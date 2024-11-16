@@ -96,7 +96,7 @@
                 value={false}
                 class="form-radio text-green-600"
               >
-              <span class="ml-2">No</span>
+              <span class="ml-2">Ask Question</span>
             </label>
           </div>
         </div>
@@ -182,7 +182,7 @@
             <!-- Returning attendee form -->
             <div class="flex flex-col">
               <label class="text-sm font-medium text-gray-700">
-                Name:
+                Name (Optional):
                 <input 
                   type="text" 
                   bind:value={returningName} 
@@ -194,7 +194,7 @@
 
             <div class="flex flex-col">
               <label class="text-sm font-medium text-gray-700">
-                DGroup Leader (if any):
+                Question:
                 <input 
                   type="text" 
                   bind:value={dgroupLeader}
