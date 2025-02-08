@@ -39,7 +39,9 @@ export async function POST({ request }) {
             body.facebookName,
             '', // Empty DGroup leader field
             body.isFirstTime ? 'First Time' : 'Returning',
-            new Date().toISOString()
+            new Date().toISOString(),
+            body.school,
+            body.wantTextAlerts ? 'Yes' : 'No'
         ] : [
             body.name,
             '', // Empty age
@@ -54,7 +56,7 @@ export async function POST({ request }) {
 
         const response = await sheets.spreadsheets.values.append({
             spreadsheetId: SHEET_ID,
-            range: 'Sheet1!A:I', // Updated range to include new columns
+            range: 'Sheet1!A:K', // Updated range to include new columns
             valueInputOption: 'USER_ENTERED',
             requestBody: {
                 values: [rowData],

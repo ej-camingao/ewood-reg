@@ -11,6 +11,8 @@
   let gender = '';
   let contactNumber = '';
   let facebookName = '';
+  let school = '';
+  let wantTextAlerts = false;
   
   // Returning attendee fields
   let returningName = '';
@@ -30,7 +32,9 @@
       birthday,
       gender,
       contactNumber,
-      facebookName
+      facebookName,
+      school,          
+      wantTextAlerts
     } : {
       isFirstTime,
       name: returningName,
@@ -81,11 +85,11 @@
       <source src="/Youth Month 2024 Video_low.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video> -->
-    <img 
-    src="year-end.jpg" 
-    alt="Youth Month 2024 Background"
-    class="w-full h-full object-cover"
-    />
+<img 
+    src="Feb-series.png" 
+    alt="Feb Series"
+    class="w-full h-screen object-cover"
+/>
   </div>
 
   <!-- Form container with flex column to push logos to bottom -->
@@ -196,6 +200,30 @@
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
               >
+            </label>
+          </div>
+
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-700">
+              School:
+              <input 
+                type="text" 
+                bind:value={school} 
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+              >
+            </label>
+          </div>
+          
+          <div class="flex items-center space-x-2">
+            <input 
+              type="checkbox" 
+              bind:checked={wantTextAlerts}
+              id="textAlerts" 
+              class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-500 focus:ring-green-500"
+            >
+            <label for="textAlerts" class="text-sm font-medium text-gray-700">
+              Receive text alerts for future Elevate events
             </label>
           </div>
         {:else}
